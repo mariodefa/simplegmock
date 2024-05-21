@@ -1,14 +1,14 @@
 #ifndef MOCK_SERIAL_HPP
 #define MOCK_SERIAL_HPP
 
+#include "gmock/gmock.h"
 #include "SerialInterface.hpp"
 
 class MockSerial : public SerialInterface {
 public:
     MockSerial(){};
-    void println(String message) override{
-        //do nothing
-    };
+    virtual ~MockSerial(){};
+    MOCK_METHOD(void, println,(String message), (override));
 };
 
 #endif

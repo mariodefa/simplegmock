@@ -15,32 +15,52 @@ MockWiFiUDP mockWiFiUDP_1;
 MockUdpReader mockUdpReader_1;
 MockMotors mockMotors_1;
 
+class Udp1Test : public ::testing::Test {
+protected:
+    //mocks
+    MockSerial mockSerial_1;
+    MockWiFiUDP mockWiFiUDP_1;
+    MockUdpReader mockUdpReader_1;
+    MockMotors mockMotors_1;
+
+    void SetUp() override {
+        Udp1::linkDependencies(&mockUdpReader_1, &mockMotors_1);
+        Udp1::startUdpSocket(&mockWiFiUDP_1, &mockSerial_1);
+    }
+
+    void TearDown() override {        
+        mockSerial_1.~MockSerial();
+        mockWiFiUDP_1.~MockWiFiUDP();
+        mockMotors_1.~MockMotors();
+        mockUdpReader_1.~MockUdpReader();
+    }
+};
+
 void SetUpMocks() {
-    Udp1::linkDependencies(&mockUdpReader_1, &mockMotors_1);
-    Udp1::startUdpSocket(&mockWiFiUDP_1, &mockSerial_1);
+    
 }
 
 //begin is called inside startUdpSocket
-TEST(Udp1Test, StartUdpSocketTest) {
+TEST_F(Udp1Test, StartUdpSocketTest) {
     //EXPECTs
-    EXPECT_CALL(mockWiFiUDP_1, begin(_));
+    EXPECT_CALL(mockWiFiUDP_1, begin(_)).Times(1);
 
     //test
     Udp1::startUdpSocket(&mockWiFiUDP_1, &mockSerial_1);
 }
 
-//parsePacket and read are called inside HandleUdpPcksTest
-TEST(Udp1Test, HandleUdpPcksCalledTest) {
+//parsePacket and read are called inside HandleUdpPcksCalledTest
+TEST_F(Udp1Test, HandleUdpPcksCalledTest) {
     //EXPECTs
     EXPECT_CALL(mockWiFiUDP_1, parsePacket()).WillOnce(Return(8));
-    EXPECT_CALL(mockWiFiUDP_1, read(_, _));
+    EXPECT_CALL(mockWiFiUDP_1, read(_, _)).Times(1);
 
     //test
     Udp1::handleUdpPcks();
 }
 
 //packet received is sent to UdpReader
-TEST(Udp1Test, HandleUdpPcksTest) {
+TEST_F(Udp1Test, HandleUdpPcksTest) {
     //Captors
     char actual[PACKET_SIZE] = {'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f'};
     char* captured_packet = nullptr;
@@ -73,10 +93,4 @@ TEST(Udp1Test, HandleUdpPcksTest) {
         std::copy(captured_packet, captured_packet + PACKET_SIZE, actual);
     }
     EXPECT_EQ(memcmp(actual, expected, PACKET_SIZE), 0);
-}
-
-int main(int argc, char **argv) {
-    SetUpMocks();
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

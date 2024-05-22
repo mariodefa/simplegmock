@@ -9,21 +9,31 @@
 using ::testing::_;
 using ::testing::Return;
 
-//mocks
-MockSerial mockSerial_2;
-MockWiFiUDP mockWiFiUDP_2;
-MockMotors mockMotors_2;
+class Udp1IntegrationTest : public ::testing::Test {
+protected:
+    //mocks
+    MockSerial mockSerial_2;
+    MockWiFiUDP mockWiFiUDP_2;
+    MockMotors mockMotors_2;
 
-//real
-UdpReader1 udpReader1_2 = UdpReader1();
+    //real
+    UdpReader1 udpReader1_2 = UdpReader1();
 
-void SetUpMocks() {
-    Udp1::linkDependencies(&udpReader1_2, &mockMotors_2);
-    Udp1::startUdpSocket(&mockWiFiUDP_2, &mockSerial_2);
-}
+    void SetUp() override {
+        Udp1::linkDependencies(&udpReader1_2, &mockMotors_2);
+        Udp1::startUdpSocket(&mockWiFiUDP_2, &mockSerial_2);
+    }
+
+    void TearDown() override {        
+        mockSerial_2.~MockSerial();
+        mockWiFiUDP_2.~MockWiFiUDP();
+        mockMotors_2.~MockMotors();
+        udpReader1_2.~UdpReader1();
+    }
+};
 
 //received package 0xFF 'b' 'd' 'f' it is translated to 255 backwards 100 forward
-TEST(Udp1Test, HandleUdpPcksTest) {
+TEST_F(Udp1IntegrationTest, HandleUdpPcksTest) {
     //fixtures
     char incomingFix[PACKET_SIZE] = {'\xFF', 'b', 'd', 'f'};
     //Captors
@@ -59,10 +69,4 @@ TEST(Udp1Test, HandleUdpPcksTest) {
         EXPECT_EQ(actual[i].getPwm(), expected[i].getPwm());
         EXPECT_EQ(actual[i].getDirection(), expected[i].getDirection());
     }
-}
-
-int main(int argc, char **argv) {
-    SetUpMocks();
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

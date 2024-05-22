@@ -52,4 +52,7 @@ target_link_libraries(Udp1IntegrationTest
 )
 
 include(GoogleTest)
-gtest_discover_tests(UdpReader1Test Udp1Test Udp1IntegrationTest)
+# test libs list
+gtest_discover_tests(UdpReader1Test)
+gtest_discover_tests(Udp1Test)
+gtest_discover_tests(Udp1IntegrationTest)

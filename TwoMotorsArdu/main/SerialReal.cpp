@@ -1,5 +1,5 @@
 #include "SerialReal.hpp"
 
-void SerialReal::println(String message) {
+void SerialReal::println(const char* message) {
     Serial.println(message);
 }

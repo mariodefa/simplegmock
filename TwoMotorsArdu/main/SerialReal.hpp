@@ -7,7 +7,7 @@
 class SerialReal : public SerialInterface {
 public:
     SerialReal() {};
-    void println(String message) override;
+    void println(const char* message) override;
 };
 
 #endif

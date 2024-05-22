@@ -30,7 +30,7 @@ TEST(Udp1Test, StartUdpSocketTest) {
 }
 
 //parsePacket and read are called inside HandleUdpPcksTest
-TEST(Udp1Test, HandleUdpPcksTest) {
+TEST(Udp1Test, HandleUdpPcksCalledTest) {
     //EXPECTs
     EXPECT_CALL(mockWiFiUDP_1, parsePacket()).WillOnce(Return(8));
     EXPECT_CALL(mockWiFiUDP_1, read(_, _));
@@ -42,7 +42,8 @@ TEST(Udp1Test, HandleUdpPcksTest) {
 //packet received is sent to UdpReader
 TEST(Udp1Test, HandleUdpPcksTest) {
     //Captors
-    char actual[PACKET_SIZE];
+    char actual[PACKET_SIZE] = {'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f'};
+    char* captured_packet = nullptr;
     //EXPECTED
     char expected[PACKET_SIZE] = {'\x7F', 'b', 'd', 'f', '\0', 'f', '\0', 'f'};
 
@@ -50,15 +51,15 @@ TEST(Udp1Test, HandleUdpPcksTest) {
     //WiFiUDP1
     EXPECT_CALL(mockWiFiUDP_1, parsePacket()).WillOnce(Return(PACKET_SIZE));
     EXPECT_CALL(mockWiFiUDP_1, read(_, PACKET_SIZE))
-        .WillOnce(DoAll(
+        .WillOnce(::testing::DoAll(
             ::testing::SetArrayArgument<0>(expected, expected + PACKET_SIZE), //forze return "expected" value inside incomingPacket param
             Return(PACKET_SIZE)
         ));
     //UdpReader1
     EXPECT_CALL(mockUdpReader_1, createCommandListFromPacket(
         ::testing::_, _))
-        .WillOnce(DoAll(
-            WithArgs<0>(SaveArg<0>(&actual)), //Capture argument 0
+        .WillOnce(::testing::DoAll(
+            ::testing::WithArgs<0>(::testing::SaveArg<0>(&captured_packet)), //Capture argument 0
             Return()
         ));
     //Motors1
@@ -68,6 +69,9 @@ TEST(Udp1Test, HandleUdpPcksTest) {
     Udp1::handleUdpPcks();
 
     //check
+    if (captured_packet != nullptr) {
+        std::copy(captured_packet, captured_packet + PACKET_SIZE, actual);
+    }
     EXPECT_EQ(memcmp(actual, expected, PACKET_SIZE), 0);
 }
 

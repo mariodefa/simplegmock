@@ -4,6 +4,7 @@
 #include "UdpReader1.hpp"
 #include "MockSerial.hpp"
 #include "MockWiFiUDP.hpp"
+#include "MockMotors.hpp"
 
 using ::testing::_;
 using ::testing::Return;
@@ -17,45 +18,45 @@ MockMotors mockMotors_2;
 UdpReader1 udpReader1_2 = UdpReader1();
 
 void SetUpMocks() {
-    Udp1::linkDependencies(&udpReader1_2, &mockMotors);
-    Udp1::startUdpSocket(&mockWiFiUDP, &mockSerial);
+    Udp1::linkDependencies(&udpReader1_2, &mockMotors_2);
+    Udp1::startUdpSocket(&mockWiFiUDP_2, &mockSerial_2);
 }
 
-//received package 0x7F 'b' 'd' 'f' it is translated to 255 backwards 100 forward
+//received package 0xFF 'b' 'd' 'f' it is translated to 255 backwards 100 forward
 TEST(Udp1Test, HandleUdpPcksTest) {
     //fixtures
-    char incomingFix[PACKET_SIZE] = {'\x7F', 'b', 'd', 'f'};
+    char incomingFix[PACKET_SIZE] = {'\xFF', 'b', 'd', 'f'};
     //Captors
-    Command1 actual[N_COMMANDS];
+    Command1 actual[N_COMMANDS] = {Command1(),Command1(),Command1(),Command1()};
+    Command1* captured_commands = nullptr;
     //EXPECTED
     Command1 expected[N_COMMANDS] = {Command1(255,Direction::backward),Command1(100,Direction::forward)};
 
     //MOCKs
     //WiFiUDP1
-    EXPECT_CALL(mockWiFiUDP, parsePacket()).WillOnce(Return(PACKET_SIZE));
-    EXPECT_CALL(mockWiFiUDP, read(_, PACKET_SIZE))
-        .WillOnce(DoAll(
+    EXPECT_CALL(mockWiFiUDP_2, parsePacket()).WillOnce(Return(PACKET_SIZE));
+    EXPECT_CALL(mockWiFiUDP_2, read(_, PACKET_SIZE))
+        .WillOnce(::testing::DoAll(
             ::testing::SetArrayArgument<0>(incomingFix, incomingFix + PACKET_SIZE), //forze return incomingFix value inside incomingPacket param
             Return(PACKET_SIZE)
         ));    
     //Motors1
-    EXPECT_CALL(mockMotors, applyMotorsCommands(_)).Times(1); 
-
     //CAPTURE
-    //UdpReader1
-    EXPECT_CALL(UdpReader1, createCommandListFromPacket(
-        ::testing::_, _))
-        .WillOnce(DoAll(
-            WithArgs<1>(SaveArg<1>(&actual)), //Capture argument 1, commands
+    EXPECT_CALL(mockMotors_2, applyMotorsCommands(_))
+        .WillOnce(::testing::DoAll(
+            ::testing::WithArgs<0>(::testing::SaveArg<0>(&captured_commands)), //Capture argument 1, commands
             Return()
-        ));
+        ));; 
 
     //test
     Udp1::handleUdpPcks();
 
     //check
+    if (captured_commands != nullptr) {
+        std::copy(captured_commands, captured_commands + N_COMMANDS, actual);
+    }
     for (int i = 0; i < N_COMMANDS; ++i) {
-        EXPECT_EQ(actual[i].getPWM(), expected[i].getPWM());
+        EXPECT_EQ(actual[i].getPwm(), expected[i].getPwm());
         EXPECT_EQ(actual[i].getDirection(), expected[i].getDirection());
     }
 }

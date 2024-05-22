@@ -4,8 +4,6 @@
 
 UdpReader1 udpReader1_1 = UdpReader1();
 
-const int N_COMMANDS = 4;
-
 class UdpReader1Test : public ::testing::Test {
 protected:
     void SetUp() override {

@@ -9,9 +9,9 @@ public:
     WiFiUDPReal() {};
     void begin(unsigned int port) override;
     int parsePacket() override;
-    int read(char* buffer, size_t length) override;
-    IPAddress remoteIP() override;
-    uint16_t remotePort() override;
+    int read(char* buffer, int length) override;
+    const char* remoteIPstring() override;
+    int remotePort() override;
 
 private:
     WiFiUDP udp;

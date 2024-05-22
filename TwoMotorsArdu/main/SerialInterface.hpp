@@ -3,7 +3,7 @@
 
 class SerialInterface {
 public:
-    virtual void println(String message) = 0;
+    virtual void println(const char* message) = 0;
 };
 
 #endif

@@ -8,14 +8,14 @@ int WiFiUDPReal::parsePacket() {
     return udp.parsePacket();
 }
 
-int WiFiUDPReal::read(char* buffer, size_t length) {
-    return udp.read(buffer, length);
+int WiFiUDPReal::read(char* buffer, int length) {
+    return udp.read(buffer, static_cast<size_t>(length));
 }
 
-IPAddress WiFiUDPReal::remoteIP() {
-    return udp.remoteIP();
+const char* WiFiUDPReal::remoteIPstring() {
+    return udp.remoteIP().toString().c_str();
 }
 
-uint16_t WiFiUDPReal::remotePort() {
-    return udp.remotePort();
+int WiFiUDPReal::remotePort() {
+    return static_cast<int>(udp.remotePort());//from uint16_t
 }

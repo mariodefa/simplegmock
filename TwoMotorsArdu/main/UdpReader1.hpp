@@ -3,9 +3,7 @@
 
 #include "Command1.hpp"
 #include "UdpReaderInterface.hpp"
-
-const int CHUNK_SIZE = 2;
-const int PACKET_SIZE = 8; //remove it
+#include "UDPConstants.hpp"
 
 class UdpReader1 : public UdpReaderInterface{
 public:

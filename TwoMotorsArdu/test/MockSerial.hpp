@@ -8,7 +8,7 @@ class MockSerial : public SerialInterface {
 public:
     MockSerial(){};
     virtual ~MockSerial(){};
-    MOCK_METHOD(void, println,(String message), (override));
+    MOCK_METHOD(void, println,(const char* message), (override));
 };
 
 #endif

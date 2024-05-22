@@ -10,8 +10,8 @@ public:
     virtual ~MockWiFiUDP(){};
     MOCK_METHOD(void,begin,(unsigned int port),(override));
     MOCK_METHOD(int,parsePacket,(),(override));
-    MOCK_METHOD(int,read,(char* buffer, size_t length),(override));
-    MOCK_METHOD(const char*, remoteIP, (), (override));
+    MOCK_METHOD(int,read,(char* buffer, int length),(override));
+    MOCK_METHOD(const char*, remoteIPstring, (), (override));
     MOCK_METHOD(int, remotePort, (), (override));
 };
 

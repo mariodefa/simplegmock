@@ -94,3 +94,25 @@ TEST_F(Udp1Test, HandleUdpPcksTest) {
     }
     EXPECT_EQ(memcmp(actual, expected, PACKET_SIZE), 0);
 }
+
+TEST_F(Udp1Test, ReceivePacketSmallerThanExpected) {
+    //MOCK
+    EXPECT_CALL(mockWiFiUDP_1, parsePacket()).WillOnce(Return(6)); //packet size smaller than expected
+    //EXPECTED
+    EXPECT_CALL(mockWiFiUDP_1, read(_, _)).Times(0);
+    EXPECT_CALL(mockMotors_1, applyMotorsCommands(_)).Times(0);
+
+    //test
+    Udp1::handleUdpPcks();
+}
+
+TEST_F(Udp1Test, ReceivePacketLargerThanExpected) {
+    //MOCK
+    EXPECT_CALL(mockWiFiUDP_1, parsePacket()).WillOnce(Return(10)); //packet size bigger than expected
+    //EXPECTED
+    EXPECT_CALL(mockWiFiUDP_1, read(_, _)).Times(0);
+    EXPECT_CALL(mockMotors_1, applyMotorsCommands(_)).Times(0);
+
+    //test
+    Udp1::handleUdpPcks();
+}

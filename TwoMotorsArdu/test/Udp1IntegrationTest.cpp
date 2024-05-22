@@ -70,3 +70,25 @@ TEST_F(Udp1IntegrationTest, HandleUdpPcksTest) {
         EXPECT_EQ(actual[i].getDirection(), expected[i].getDirection());
     }
 }
+
+TEST_F(Udp1IntegrationTest, ReceivePacketSmallerThanExpected) {
+    //MOCK
+    EXPECT_CALL(mockWiFiUDP_2, parsePacket()).WillOnce(Return(6)); //packet size smaller than expected
+    //EXPECTED
+    EXPECT_CALL(mockWiFiUDP_2, read(_, _)).Times(0);
+    EXPECT_CALL(mockMotors_2, applyMotorsCommands(_)).Times(0);
+
+    //test
+    Udp1::handleUdpPcks();
+}
+
+TEST_F(Udp1IntegrationTest, ReceivePacketLargerThanExpected) {
+    //MOCK
+    EXPECT_CALL(mockWiFiUDP_2, parsePacket()).WillOnce(Return(10)); //packet size bigger than expected
+    //EXPECTED
+    EXPECT_CALL(mockWiFiUDP_2, read(_, _)).Times(0);
+    EXPECT_CALL(mockMotors_2, applyMotorsCommands(_)).Times(0);
+
+    //test
+    Udp1::handleUdpPcks();
+}

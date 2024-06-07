@@ -10,6 +10,15 @@ npm install tsx
 
 # Run
 ```Shell
-npx tsx udpClient.ts
+npm run start
+```
+
+# Check if it works as expected at local
+```Shell
+npm run server
+```
+open new shell  
+```Shell
+npm run start
 ```
 

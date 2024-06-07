@@ -4,8 +4,8 @@
 
 void setup() {
   Serial.begin(115200);
-  motors1.setup();
-  HotSpot1::start();
+  motors1.setup1();
+  HotSpot1::start1();
   Serial.println("Hotspot iniciado. Conéctate a la red WiFi y visita la dirección IP 192.168.4.1 para configurar la red WiFi doméstica.");
 }
 

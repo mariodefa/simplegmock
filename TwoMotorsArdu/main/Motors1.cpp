@@ -1,8 +1,10 @@
 #include "Motors1.hpp"
 
-const int Motors1::pwmPins[] = {5, 4, 0, 2};
+Motors1 motors1 = Motors1();
 
-void Motors1::setup(){
+Motors1::Motors1() : pwmPins{D5, D6, D7, D8, D1, D2, D3, D4}{} //GPIO 14,12,13,15, 5,4,0,2
+
+void Motors1::setup1(){  
   for (int i = 0; i < N_PINS; i++) {
     pinMode(pwmPins[i], OUTPUT);
   }
@@ -12,7 +14,7 @@ void Motors1::setup(){
 }
 
 void Motors1::applyMotorsCommands(Command1 *commands){
-    for(int i=0;i<N_COMANDS,i++){
+    for(int i=0;i<N_COMMANDS;i++){
         setMotorPWMs(i*2, commands[i]);
     }
 }

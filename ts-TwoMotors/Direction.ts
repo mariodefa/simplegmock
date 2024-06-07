@@ -1,4 +1,4 @@
-export enum Direction { 
-    forward = 'f', 
-    backward = 'b'
-};
+export enum Direction {
+  forward = "f",
+  backward = "b",
+}

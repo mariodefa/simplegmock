@@ -11,7 +11,7 @@
 //using UDP packets will arrived in wrong order, get lost. but it will use less bandwidth
 class Udp1 {
 public:
-    static void linkDependencies(UdpReaderInterface *udpReader1, MotorsInterface *motors1);
+    static void linkDependencies(UdpReaderInterface *udpReaderInstance, MotorsInterface *motorsInstance);
     static void startUdpSocket(WiFiUDPInterface *udpInstance, SerialInterface *serInstance);
     static void handleUdpPcks();
 private:

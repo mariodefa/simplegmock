@@ -1,5 +1,9 @@
 #include "WifiConn1.hpp"
 
+UdpReader1 udpReader1 = UdpReader1();
+WiFiUDPReal wiFiUDPReal = WiFiUDPReal();
+SerialReal serialReal = SerialReal();
+
 bool WifiConn1::connected = false;
 
 void WifiConn1::connectToDomesticWifi(String wifiName, String wifiPass) {
@@ -17,8 +21,8 @@ void WifiConn1::connectToDomesticWifi(String wifiName, String wifiPass) {
         Serial.println("Dirección IP: ");
         Serial.println(WiFi.localIP());
         connected = true;
-        Udp1::linkDependencies(udpReader1,motors1);
-        Udp1::startUdpSocket(wiFiUDPReal,serialReal);
+        Udp1::linkDependencies(&udpReader1,&motors1);
+        Udp1::startUdpSocket(&wiFiUDPReal,&serialReal);
     } else {
         Serial.println("");
         Serial.println("Error al conectar a la red WiFi doméstica.");

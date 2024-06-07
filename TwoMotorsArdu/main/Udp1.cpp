@@ -8,9 +8,9 @@ const unsigned int UDP_PORT = 4210;
 char Udp1::incomingPacket[PACKET_SIZE+1];
 Command1 Udp1::commands[N_COMMANDS];
 
-void Udp1::linkDependencies(UdpReaderInterface *udpReader1, MotorsInterface *motors1){
-    udpRe = udpReader1;
-    mot = motors1;
+void Udp1::linkDependencies(UdpReaderInterface *udpReaderInstance, MotorsInterface *motorsInstance){
+    udpRe = udpReaderInstance;
+    mot = motorsInstance;
 }
 
 void Udp1::startUdpSocket(WiFiUDPInterface *udpInstance, SerialInterface *serInstance) {

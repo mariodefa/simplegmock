@@ -5,13 +5,12 @@
 #include "WifiConn1.hpp"
 #include "setPass.hpp"
 
-const char *ssid = "Azucarito"; // Nombre del Hotspot
-const char *password = "********"; // Contraseña del Hotspot
-ESP8266WebServer server(80);
+const String SSID1 = "Azucarito"; // Nombre del Hotspot
+const String PASSWORD = "********"; // Contraseña del Hotspot
 
 class HotSpot1 {
     public:
-        static void start();
+        static void start1();
         static void handleReqs();
     private:
         static void handleRoot();

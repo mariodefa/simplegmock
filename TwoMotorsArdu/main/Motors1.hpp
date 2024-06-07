@@ -2,19 +2,20 @@
 #define MOTORS1_HPP
 #include "Udp1.hpp"
 #include "MotorsInterface.hpp"
+#include <Arduino.h> //for pinMode, analogWrite funcs and OUTPUT value
 
-const int N_PINS = 4;
+const int N_PINS = 8;
 
 class Motors1 : public MotorsInterface{
 public:
-    Motors1() {};
-    void setup() override;
+    Motors1();
+    void setup1();
     void applyMotorsCommands(Command1 *commands) override;
 private:
-    const int pwmPins[];
+    const int pwmPins[N_PINS];
     void setMotorPWMs(int motorIndex, Command1 command);
 };
 
-Motors1 motors1 = Motors1();
+extern Motors1 motors1;
 
 #endif

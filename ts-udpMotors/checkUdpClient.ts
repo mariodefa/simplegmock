@@ -1,8 +1,10 @@
 import { Command1 } from "./Command1";
 import { Utils } from "./Utils";
 import { Direction } from "./Direction";
-import { UdpClient } from "./udpClient";
+import { UdpClient } from "./UdpClient";
+import { Constants } from "./Constants";
 
+UdpClient.setDestination(Constants.SERVER_ADDRESS);
 async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

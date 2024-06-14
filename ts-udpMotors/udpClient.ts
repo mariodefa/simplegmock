@@ -1,8 +1,8 @@
 import * as dgram from "dgram";
 
 const UDP_PORT: number = 4210;
-const SERVER_ADDRESS: string = "localhost"; //192.168.1.100 Cambia esta dirección por la dirección IP de tu Arduino
 export class UdpClient{
+  private static destination : string = "192.168.4.32";
   private static SOCKET: dgram.Socket = dgram.createSocket("udp4");
   private static sendCallback(error: Error | null) {
     if (error) {
@@ -12,9 +12,12 @@ export class UdpClient{
     }
   }
 
+  public static setDestination(dest:string){
+    UdpClient.destination = dest;
+  }
   public static sendCommands(commands: Uint8Array) {
     const message = Buffer.from(commands);
-    UdpClient.SOCKET.send(message, UDP_PORT, SERVER_ADDRESS, UdpClient.sendCallback);
+    UdpClient.SOCKET.send(message, UDP_PORT, UdpClient.destination, UdpClient.sendCallback);
   }
 
   public static close(){

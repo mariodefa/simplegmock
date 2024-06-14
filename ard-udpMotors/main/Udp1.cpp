@@ -27,8 +27,8 @@ void Udp1::handleUdpPcks() {
     {
         //Serial.printf("Recibido %d bytes desde %s, puerto %d\n", packetSize, udp->remoteIPstring(), udp->remotePort());
         int len = udp->read(incomingPacket, PACKET_SIZE);        
-        ser->println("Mensaje UDP:\n");
-        ser->println(incomingPacket);
+        //ser->println("Mensaje UDP:\n");
+        //ser->println(incomingPacket);
         udpRe->createCommandListFromPacket(incomingPacket, commands); //new commands saved in commands array
         mot->applyMotorsCommands(commands); //write pwms from commands array into motors
     }

@@ -3,6 +3,7 @@ import { GamePadListener } from "./GamePadListener";
 import { Utils } from "./Utils";
 import { UdpClient } from "./UdpClient";
 
+UdpClient.setDestination("192.168.4.32");
 GamePadListener.initialize();
 GamePadListener.connectGamePad();
 GamePadListener.setupCommandsListener();

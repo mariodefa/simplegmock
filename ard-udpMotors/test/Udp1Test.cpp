@@ -52,7 +52,7 @@ TEST_F(Udp1Test, StartUdpSocketTest) {
 //parsePacket and read are called inside HandleUdpPcksCalledTest
 TEST_F(Udp1Test, HandleUdpPcksCalledTest) {
     //EXPECTs
-    EXPECT_CALL(mockWiFiUDP_1, parsePacket()).WillOnce(Return(8));
+    EXPECT_CALL(mockWiFiUDP_1, parsePacket()).WillOnce(Return(PACKET_SIZE));
     EXPECT_CALL(mockWiFiUDP_1, read(_, _)).Times(1);
 
     //test
@@ -62,10 +62,10 @@ TEST_F(Udp1Test, HandleUdpPcksCalledTest) {
 //packet received is sent to UdpReader
 TEST_F(Udp1Test, HandleUdpPcksTest) {
     //Captors
-    char actual[PACKET_SIZE] = {'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f'};
+    char actual[PACKET_SIZE] = {'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f'};
     char* captured_packet = nullptr;
     //EXPECTED
-    char expected[PACKET_SIZE] = {'\x7F', 'b', 'd', 'f', '\0', 'f', '\0', 'f'};
+    char expected[PACKET_SIZE] = {'\x7F', 'b', 'd', 'f', '\0', 'f', '\0', 'f', '\0', 'f', '\xB4', 'f'};
 
     //MOCKs
     //WiFiUDP1

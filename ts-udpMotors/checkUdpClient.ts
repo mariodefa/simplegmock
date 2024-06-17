@@ -27,22 +27,24 @@ async function main(): Promise<void> {
     pwm: 50,
     direction: Direction.forward,
   });
+  let command5: Command1 = new Command1({
+    pwm: 90,
+    direction: Direction.forward,
+  });
+  let command6: Command1 = new Command1({
+    pwm: 180,
+    direction: Direction.forward,
+  });
   commands = Utils.concatByteArrays(
     command1.getData(),
     command2.getData(),
     command3.getData(),
-    command4.getData()
+    command4.getData(),
+    command5.getData(),
+    command6.getData()
   );
   UdpClient.sendCommands(commands);
   await delay(1000);
-  let command5: Command1 = new Command1({
-    pwm: 0,
-    direction: Direction.backward,
-  });
-  let command6: Command1 = new Command1({
-    pwm: 0,
-    direction: Direction.forward,
-  });
   let command7: Command1 = new Command1({
     pwm: 0,
     direction: Direction.backward,
@@ -51,11 +53,29 @@ async function main(): Promise<void> {
     pwm: 0,
     direction: Direction.forward,
   });
+  let command9: Command1 = new Command1({
+    pwm: 0,
+    direction: Direction.backward,
+  });
+  let command10: Command1 = new Command1({
+    pwm: 0,
+    direction: Direction.forward,
+  });
+  let command11: Command1 = new Command1({
+    pwm: 0,
+    direction: Direction.forward,
+  });
+  let command12: Command1 = new Command1({
+    pwm: 0,
+    direction: Direction.forward,
+  });
   commands = Utils.concatByteArrays(
-    command5.getData(),
-    command6.getData(),
     command7.getData(),
-    command8.getData()
+    command8.getData(),
+    command9.getData(),
+    command10.getData(),
+    command11.getData(),
+    command12.getData()
   );
   UdpClient.sendCommands(commands);
 }

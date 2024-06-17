@@ -5,7 +5,7 @@ import { Utils } from './Utils';
 import { Direction } from './Direction';
 var GameController = require('gamecontroller');
 
-const N_COMMANDS = 4;//6 to include 2 servos
+const N_COMMANDS = 6;
 
 export class GamePadListener{
     private static gc : any;
@@ -26,7 +26,7 @@ export class GamePadListener{
         GamePadListener.gc = new GameController('thrustmaster');
         GamePadListener.gc.connect();
     }
-    private static updateCommands(o: any, inputIndex: number){
+    private static updateMotorCommands(o: any, inputIndex: number){
         let c : PadCoordenates = new PadCoordenates(o);
         let y : number = c.getY();
         let dir : Direction = Direction.forward;
@@ -49,12 +49,16 @@ export class GamePadListener{
             break;
         }
     }
+    private static updateServoCommands(){
+        GamePadListener.commands[4]=new Command1({pwm: GamePadListener.servo1Angle, direction: Direction.forward});
+        GamePadListener.commands[5]=new Command1({pwm: GamePadListener.servo2Angle, direction: Direction.forward});
+    }
     public static setupCommandsListener(){
         GamePadListener.gc.on('JOYR:move', function(o:any) {
-            GamePadListener.updateCommands(o,0);
+            GamePadListener.updateMotorCommands(o,0);
           });
           GamePadListener.gc.on('JOYL:move', function(o:any) {
-            GamePadListener.updateCommands(o,1);       
+            GamePadListener.updateMotorCommands(o,1);       
           });
           GamePadListener.gc.on('X:press', function() {//swap control part, from caterpillar to arm and reverse
             GamePadListener.caterpillar = !GamePadListener.caterpillar;
@@ -62,27 +66,27 @@ export class GamePadListener{
           
         GamePadListener.gc.on('R1:press', function() {
             GamePadListener.servo1Angle = 180;
-            //GamePadListener.commands[4]=new Command1({pwm: GamePadListener.servo1Angle, direction: Direction.forward});
+            GamePadListener.updateServoCommands();
         });
         GamePadListener.gc.on('L1:press', function() {
             GamePadListener.servo1Angle = 0;
-            //GamePadListener.commands[4]=new Command1({pwm: GamePadListener.servo1Angle, direction: Direction.forward});
+            GamePadListener.updateServoCommands();
         });
         GamePadListener.gc.on('R2:press', function() {
             GamePadListener.servo2Angle = 180;
-            //GamePadListener.commands[5]=new Command1({pwm: GamePadListener.servo2Angle, direction: Direction.forward});
+            GamePadListener.updateServoCommands();
         });
         GamePadListener.gc.on('L2:press', function() {
             GamePadListener.servo2Angle = 0;
-            //GamePadListener.commands[5]=new Command1({pwm: GamePadListener.servo2Angle, direction: Direction.forward});
+            GamePadListener.updateServoCommands();
         });
         GamePadListener.gc.on('T:press', function() {
             GamePadListener.servo1Angle = 90;
-            //GamePadListener.commands[4]=new Command1({pwm: GamePadListener.servo1Angle, direction: Direction.forward});
+            GamePadListener.updateServoCommands();
         });
         GamePadListener.gc.on('O:press', function() {
             GamePadListener.servo2Angle = 90;
-            //GamePadListener.commands[5]=new Command1({pwm: GamePadListener.servo2Angle, direction: Direction.forward});
+            GamePadListener.updateServoCommands();
         });
     }
     public static getCommands(): Command1[]{

@@ -32,15 +32,18 @@ protected:
     }
 };
 
-//received package 0xFF 'b' 'd' 'f' it is translated to 255 backwards 100 forward
+//received package 0xFF 'b' 'd' 'f' 0xFF 'b' 'd' 'f' 0x5A 'f' 0xB4 'f' it is translated to 255 backwards 100 forward 255 backwards 100 forward 90 forward 180 forward
 TEST_F(Udp1IntegrationTest, HandleUdpPcksTest) {
     //fixtures
-    char incomingFix[PACKET_SIZE] = {'\xFF', 'b', 'd', 'f'};
+    char incomingFix[PACKET_SIZE] = {'\xFF', 'b', 'd', 'f', '\xFF', 'b', 'd', 'f', '\x5A', 'f', '\xB4', 'f'};
     //Captors
-    Command1 actual[N_COMMANDS] = {Command1(),Command1(),Command1(),Command1()};
+    Command1 actual[N_COMMANDS] = {Command1(),Command1(),Command1(),Command1(),Command1(),Command1()};
     Command1* captured_commands = nullptr;
     //EXPECTED
-    Command1 expected[N_COMMANDS] = {Command1(255,Direction::backward),Command1(100,Direction::forward)};
+    Command1 expected[N_COMMANDS] = {
+        Command1(255,Direction::backward),Command1(100,Direction::forward),Command1(255,Direction::backward),Command1(100,Direction::forward),
+        Command1(90,Direction::forward),Command1(180,Direction::forward)//2 servo commands
+    };
 
     //MOCKs
     //WiFiUDP1

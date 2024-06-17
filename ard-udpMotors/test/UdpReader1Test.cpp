@@ -15,8 +15,8 @@ protected:
 
 TEST_F(UdpReader1Test, CreateCommandListFromPacketTest) {
     //fixtures
-    //255 = '\xFF', 100 = 'd', 127 = '\x7F'
-    char packet[PACKET_SIZE] = {'\xFF', 'b', 'd', 'f', '\0', 'f', '\x7F', 'f'};
+    //255 = '\xFF', 100 = 'd', 127 = '\x7F', 90 = '\x5A', 180 = '\xB4'
+    char packet[PACKET_SIZE] = {'\xFF', 'b', 'd', 'f', '\0', 'f', '\x7F', 'f', '\x5A', 'f', '\xB4', 'f'};
 
     //EXPECTED
     Command1 expected[N_COMMANDS] = {Command1(), Command1(), Command1(), Command1()};
@@ -24,6 +24,8 @@ TEST_F(UdpReader1Test, CreateCommandListFromPacketTest) {
     expected[1] = Command1(100,Direction::forward);
     expected[2] = Command1(0,Direction::forward);
     expected[3] = Command1(127,Direction::forward);
+    expected[4] = Command1(90,Direction::forward);//servo1
+    expected[5] = Command1(180,Direction::forward);//servo2
 
     //test
     Command1 actual[N_COMMANDS];

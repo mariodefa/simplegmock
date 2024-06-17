@@ -3,6 +3,7 @@
 #include "Udp1.hpp"
 #include "MotorsInterface.hpp"
 #include <Arduino.h> //for pinMode, analogWrite funcs and OUTPUT value
+#include <Servo.h> //for Servos
 
 const int N_PINS = 8;
 
@@ -12,6 +13,8 @@ public:
     void setup1();
     void applyMotorsCommands(Command1 *commands) override;
 private:
+    Servo servo1;
+    Servo servo2;
     const int pwmPins[N_PINS];
     void setMotorPWMs(int motorIndex, Command1 command);
 };

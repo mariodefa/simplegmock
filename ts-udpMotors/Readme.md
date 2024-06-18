@@ -19,6 +19,6 @@ npm run server
 ```
 open new shell  
 ```Shell
-npm run start
+npm run check1
 ```
 

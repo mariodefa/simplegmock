@@ -1,7 +1,7 @@
 #ifndef HOTSPOT1_HPP
 #define HOTSPOT1_HPP
 
-#include <ESP8266WebServer.h> //to start http server as hotspot config server
+#include <WebServer.h> //to start http server as hotspot config server
 #include "WifiConn1.hpp"
 #include "setPass.hpp"
 

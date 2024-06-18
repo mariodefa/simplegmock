@@ -1,6 +1,6 @@
 #include "HotSpot1.hpp"
 
-ESP8266WebServer server(80);
+WebServer server(80);
 
 void HotSpot1::start1() {
     WiFi.softAP(SSID1.c_str(), PASSWORD.c_str());    

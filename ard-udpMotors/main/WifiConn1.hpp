@@ -2,7 +2,7 @@
 #define WIFICONN1_HPP
 
 #include <Arduino.h>  // for Serial.println
-#include <ESP8266WiFi.h> // for WiFi connection
+#include <WiFi.h> // for WiFi connection
 #include "Udp1.hpp"  //to start UDP server after connection
 #include "UdpReader1.hpp"  //to link reader to udp server
 #include "WiFiUDPReal.hpp"  //to use real calls to hardware

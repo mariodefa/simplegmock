@@ -13,7 +13,11 @@ int WiFiUDPReal::read(char* buffer, int length) {
 }
 
 const char* WiFiUDPReal::remoteIPstring() {
-    return udp.remoteIP().toString().c_str();
+    static char ipStr[16];//By using a static buffer, we ensure that the IP address is not lost or corrupted when the function exits
+    String ipString = udp.remoteIP().toString();
+    strncpy(ipStr, ipString.c_str(), sizeof(ipStr) - 1);//copy it so it will remain during the entire execution, strncpy(dest,src,length)
+    ipStr[sizeof(ipStr) - 1] = '\0';//end array with null
+    return ipStr;
 }
 
 int WiFiUDPReal::remotePort() {

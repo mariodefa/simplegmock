@@ -2,11 +2,22 @@
 
 Motors1 motors1 = Motors1();
 
-Motors1::Motors1() : pwmPins{D5, D6, D7, D8, D1, D2, D3, D4}{} //GPIO 14,12,13,15, 5,4,0,2
+/*
+ESP32-S3 WROOM-1-N16R8
+ESP32-S3-DevKitC-1
+Motor 1: GPIO 5 , GPIO 6
+Motor 2: GPIO 7 , GPIO 15
+Motor 3: GPIO 11 , GPIO 12
+Motor 4: GPIO 13 , GPIO 14
+Servo 1: GPIO 9
+Servo 2: GPIO 10
+*/
+
+Motors1::Motors1() : pwmPins{5, 6, 7, 15, 11, 12, 13, 14}{}
 
 void Motors1::setup1(){  
-  servo1.attach(D0);//GPIO 16
-  servo2.attach(A0);//ADC0
+  servo1.attach(9);
+  servo2.attach(10);
   for (int i = 0; i < N_PINS; i++) {
     pinMode(pwmPins[i], OUTPUT);
   }

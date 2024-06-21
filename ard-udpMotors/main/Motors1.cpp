@@ -9,15 +9,15 @@ Motor 1: GPIO 5 , GPIO 6
 Motor 2: GPIO 7 , GPIO 15
 Motor 3: GPIO 11 , GPIO 12
 Motor 4: GPIO 13 , GPIO 14
-Servo 1: GPIO 9
-Servo 2: GPIO 10
+Servo 1: GPIO 16
+Servo 2: GPIO 17
 */
 
 Motors1::Motors1() : pwmPins{5, 6, 7, 15, 11, 12, 13, 14}{}
 
 void Motors1::setup1(){  
-  servo1.attach(9);
-  servo2.attach(10);
+  servo1.attach(16);
+  servo2.attach(17);
   for (int i = 0; i < N_PINS; i++) {
     pinMode(pwmPins[i], OUTPUT);
   }
